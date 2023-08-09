@@ -107,3 +107,13 @@ button {
     background-color: #0f0f0f69;
   }
 }
+
+.high{
+  color:red;
+}
+.medium{
+  color:orange;
+}
+.low{
+  color: yellow;
+}
