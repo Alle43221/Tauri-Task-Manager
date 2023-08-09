@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import {tasks, } from './'
+import {Ref, ref} from "vue";
+import {tasks, lasttask, taskName, taskDescription, taskPriority, current_id} from '../App.vue'
+const ValidInput: Ref<Boolean>=ref(false);
+let current_id=0;
 
 function createTask() {
-    /* TO-DO (4) DONE
-    Validate the user input before showing it on the screen.
-    For example, the task must have a name. It's your choice what checks you want to make.
-    Only if the user input is valid, will you show it on the screen.
-  */
       
     if ((taskName.value!=='')&&(taskPriority.value!==0)){
       ValidInput.value=true; 
@@ -14,7 +12,8 @@ function createTask() {
       lasttask.value.id=current_id++;
       lasttask.value.description=taskDescription.value;
       lasttask.value.priority=taskPriority.value;
-      tasks.value.push({id:current_id, name:taskName.value, description:taskDescription.value, priority: taskPriority.value});
+      lasttask.value.done=false;
+      tasks.value.push({id:current_id, name:taskName.value, description:taskDescription.value, priority: taskPriority.value, done:false});
     }
     else {
       ValidInput.value=false;
@@ -24,3 +23,35 @@ function createTask() {
 
 </script>
 
+<template>
+    <div class="container">
+      <h1>Create a New Task</h1>
+      
+      <div>
+      <input v-model="taskName" placeholder="Task Name">
+      <input v-model="taskDescription" placeholder="Task Description">
+      <p>Priority:</p>
+      <div>
+      <input type="radio" id="low" value=3 v-model="taskPriority" />
+      <label for="low">Low</label>
+      <input type="radio" id="medium" value=2 v-model="taskPriority" />
+      <label for="medium">Medium</label>
+      <input type="radio" id="high" value=1 v-model="taskPriority" />
+      <label for="high">High</label>
+      </div>
+      <button @click="createTask">Create Task</button>
+      </div>
+  
+      <div class="show-task">
+  
+        <div v-if="ValidInput">
+          <h3>Last added:</h3>
+          <p>Name : {{lasttask.name}}</p>
+          <p>Description : {{lasttask.description}}</p>
+          <p>Priority : {{lasttask.priority}}</p>
+          
+        </div>
+      </div>
+        
+    </div>
+</template>
